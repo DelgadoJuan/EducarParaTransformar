@@ -30,7 +30,7 @@
                 <a class="nav-link" href="#info-card"> BIENESTAR </a>
                 <a class="nav-link" href="#comm-card"> COMENTARIOS </a>
 
-                <a class="nav-link-mobile" href=""> INICIAR SESIÓN </a>
+                <a class="nav-link-mobile" href="/login"> INICIAR SESIÓN </a>
             </ul>
             <p class="nav-spacer">I</p>
             <!--<a class="nav-link-login" href="/login"> INICIAR SESION </a> -->
@@ -178,7 +178,7 @@
                 <p>Inspiramos, desafiamos y empoderamos a todos nuestros alumnos a
                     ser miembros comprometidos y éticos de una comunidad global.</p>
                 <div>
-                    <Button class='btn-inscribirse' onclick="window.location.href='Pages/signup.html';">INSCRIBIRSE
+                    <Button class='btn-inscribirse' onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdEfRB8O08_djo2pVhmhUP2tZ3UwreWH5-hoKbt1gOv8M-Jkg/viewform?usp=sf_link';">INSCRIBIRSE
                     </Button>
                 </div>
                 <p>¿Crees que tu experiencia nos puede ser útil? <a href="#" class="unete-btn"> Trabaja con nosotros</a></p>
@@ -303,13 +303,11 @@
                     </div>
 
                     <div class="ic-txt-card">
-                        <h3>Educacion inicial </h3>
-                        <p>En diálogo con Teleshow, la imitadora habló de su relación sentimental con el
-                            candidato a presidente por La Libertad Avanza. “Estamos muy bien, pero por el
-                            momento prefiero no hablar mucho. Es muy reciente”, dijo Fátima Florez en
-                            diálogo con Teleshow.
-                            En UADE formamos jóvenes profesionales a través de carreras innovadoras
-                            y de una moderna gestión educativa.
+                        <h3>Educación inicial </h3>
+                        <p>En Educar Para Transformar, creemos en el poder de los primeros pasos en el camino de la educación.
+                            Nuestro Nivel Inicial es el lugar donde los niños comienzan su emocionante viaje de aprendizaje.
+                            Nos enorgullece ofrecer un entorno seguro, estimulante y cariñoso que nutre la curiosidad natural de los niños
+                            y sienta las bases para su éxito académico y desarrollo personal.
                         </p>
 
                     </div>
@@ -319,13 +317,10 @@
                 <div class="ic-card">
 
                     <div class="ic-txt-card-2">
-                        <h3> Educacion Primaria </h3>
-                        <p>En diálogo con Teleshow, la imitadora habló de su relación sentimental con el
-                            candidato a presidente por La Libertad Avanza. “Estamos muy bien, pero por el
-                            momento prefiero no hablar mucho. Es muy reciente”, dijo Fátima Florez en
-                            diálogo con Teleshow.
-                            En UADE formamos jóvenes profesionales a través de carreras innovadoras
-                            y de una moderna gestión educativa.
+                        <h3> Educación Primaria </h3>
+                        <p>En Educar Para Transformar, el Nivel Primario es donde damos forma a los fundamentos de una educación sólida y duradera.
+                            Estamos comprometidos en nutrir la curiosidad natural de nuestros estudiantes y
+                            en guiarlos en un emocionante viaje de descubrimiento, aprendizaje y crecimiento.
                         </p>
 
                     </div>
@@ -343,13 +338,11 @@
                     </div>
 
                     <div class="ic-txt-card">
-                        <h3> Educacion Secundaria </h3>
-                        <p>En diálogo con Teleshow, la imitadora habló de su relación sentimental con el
-                            candidato a presidente por La Libertad Avanza. “Estamos muy bien, pero por el
-                            momento prefiero no hablar mucho. Es muy reciente”, dijo Fátima Florez en
-                            diálogo con Teleshow.
-                            En UADE formamos jóvenes profesionales a través de carreras innovadoras
-                            y de una moderna gestión educativa.
+                        <h3> Educación Secundaria </h3>
+                        <p>En Educar Para Transformar, el nivel de Educación Secundaria representa un emocionante período de crecimiento,
+                            descubrimiento y preparación para el futuro.
+                            Nuestro enfoque es claro: proporcionar a los estudiantes las herramientas y
+                            el conocimiento necesarios para sobresalir en una sociedad en constante cambio
                         </p>
 
                     </div>
@@ -360,12 +353,9 @@
 
                     <div class="ic-txt-card-2">
                         <h3> Bienestar Estudiantil </h3>
-                        <p>En diálogo con Teleshow, la imitadora habló de su relación sentimental con el
-                            candidato a presidente por La Libertad Avanza. “Estamos muy bien, pero por el
-                            momento prefiero no hablar mucho. Es muy reciente”, dijo Fátima Florez en
-                            diálogo con Teleshow.
-                            En UADE formamos jóvenes profesionales a través de carreras innovadoras
-                            y de una moderna gestión educativa.
+                        <p>En Educar Para Transformar, entendemos que el bienestar de nuestros estudiantes es fundamental para su éxito académico y personal.
+                            Nuestro compromiso con el bienestar estudiantil va más allá de las aulas, ya que creemos que un estudiante feliz y
+                            saludable es un estudiante que puede alcanzar su máximo potencial
                         </p>
 
                     </div>
@@ -388,44 +378,14 @@
 
         <div class="cm-card-div">
 
+            <h2>Comentarios</h2>
 
             <div class="cm-card-container">
-
                 <div class="cm-card-user" th:each="comentario : ${comentarios}">
                     <p class="cm-comment" th:text="${comentario.descripcion}"></p>
                     <p th:text="'- ' + ${{comentario.nombre}}"></p>
                 </div>
             </div>
-
-            <!--<div class="cm-card-container">
-
-                <div class="cm-card-user">
-                    <p class="cm-comment">Lorem ipsum dolor sit amet, consectetur
-                        adipiscing elit.Vestibulum aliquet mauris. Nulla
-                        facilisi. Proin tempor nisl id consequat ultricies.
-                        Nulla ace Nulla facilisi. Proin tempor nisl id
-                        consequat.
-                        Vestibulum aliquet mauris.</p>
-                    <p>- Nicolas Cerezo</p>
-                </div>
-
-                <div class="cm-card-user">
-                    <p class="cm-comment">Lorem ipsum dolor sit amet, consectetur
-                        adipiscing elit.Vestibulum aliquet mauris. Nulla
-                        facilisi proin tempor.
-                        Vestibulum aliquet mauris.</p>
-                    <p>- Nicolas Cerezo</p>
-                </div>
-
-                <div class="cm-card-user">
-                    <p class="cm-comment">Lorem ipsum dolor sit amet,
-                        consectetur adipiscing elit. Vestibulum
-                        aliquet mauris</p>
-                    <p>- Nicolas Cerezo</p>
-                </div>
-
-
-            </div> -->
 
             <div class="cm-card-container" id="cm-card-container-mobile">
 
@@ -438,18 +398,10 @@
                 </div>
 
                 <div class="cm-card-user-mobile">
-                    <p class="cm-comment">Lorem ipsum dolor sit amet, consectetur
-                        adipiscing elit.Vestibulum aliquet mauris. Nulla
-                        facilisi proin tempor.
-                        Vestibulum aliquet mauris.</p>
-                    <p>- Nicolas Cerezo</p>
-                </div>
-
-                <div class="cm-card-user-mobile">
-                    <p class="cm-comment">Lorem ipsum dolor sit amet,
-                        consectetur adipiscing elit. Vestibulum
-                        aliquet mauris</p>
-                    <p>- Nicolas Cerezo</p>
+                    <div class="cm-card-user" th:each="comentario : ${comentarios}">
+                        <p class="cm-comment" th:text="${comentario.descripcion}"></p>
+                        <p th:text="'- ' + ${{comentario.nombre}}"></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -479,11 +431,11 @@
             </div>
 
             <div class="end-list-3">
-                <h4 class="end-list-item-name" href="">CONTÁCTANOS</h4>
-                <a class="end-list-item" href="">MAIL</a>
+                <h4 class="end-list-item-name" >CONTÁCTANOS</h4>
+                <a class="end-list-item" href="mailto:educarparatransformar@correo.com">MAIL</a>
                 <a class="end-list-item" href="">WHATSAPP</a>
-                <a class="end-list-item" href="">FACEBOOK</a>
-                <a class="end-list-item" href="">LINKEDIN</a>
+                <a class="end-list-item" href="https://www.facebook.com/groups/2455390204556456">FACEBOOK</a>
+                <a class="end-list-item" href="https://www.linkedin.com/groups/3712664/">LINKEDIN</a>
             </div>
 
         </div>
