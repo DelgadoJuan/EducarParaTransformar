@@ -1,4 +1,4 @@
-package com.educarparatransformar.web.DTO;
+package com.educarparatransformar.web.Entity;
 
 public enum TipoPago {
     Credito,

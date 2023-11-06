@@ -1,4 +1,4 @@
-package com.educarparatransformar.web.DTO;
+package com.desktop.DesktopApp.Entity;
 
 public enum Nivel {
     Inicial,
