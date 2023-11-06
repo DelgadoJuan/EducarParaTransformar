@@ -1,19 +1,31 @@
 package com.educarparatransformar.web.Entity;
 
 import com.educarparatransformar.web.DTO.Roles;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "profesor")
 public class ProfesorEntity extends UsuarioEntity{
-    @ManyToMany(mappedBy = "profesores")
+    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<MateriaEntity> materias;
+
+    public ProfesorEntity(String username, String nombre, String email, String password, LocalDate fechaNacimiento, Roles rol, List<MateriaEntity> materias) {
+        super(username, nombre, email, password, fechaNacimiento, rol);
+        this.materias = materias;
+    }
+
+    public ProfesorEntity(String username, String nombre, String email, String password, LocalDate fechaNacimiento, Roles rol) {
+        super(username, nombre, email, password, fechaNacimiento, rol);
+        materias = new ArrayList<>();
+    }
+
+    public ProfesorEntity() {
+    }
 
     public List<MateriaEntity> getMaterias() {
         return materias;
@@ -21,25 +33,6 @@ public class ProfesorEntity extends UsuarioEntity{
 
     public void setMaterias(List<MateriaEntity> materias) {
         this.materias = materias;
-    }
-
-    public ProfesorEntity() {
-    }
-
-    public ProfesorEntity(String username, String nombre, String email, String password, LocalDate fechaNacimiento, Roles rol) {
-        super(username, nombre, email, password, fechaNacimiento, rol);
-    }
-
-    public ProfesorEntity(String username, String nombre, String email, String password, LocalDate fechaNacimiento, Roles rol, List<MateriaEntity> materias) {
-        super(username, nombre, email, password, fechaNacimiento, rol);
-        this.materias = materias;
-    }
-
-    @Override
-    public String toString() {
-        return "ProfesorEntity{" +
-                "materias=" + materias +
-                '}';
     }
 
     @Override
@@ -54,5 +47,12 @@ public class ProfesorEntity extends UsuarioEntity{
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), materias);
+    }
+
+    @Override
+    public String toString() {
+        return "ProfesorEntity{" +
+                "materias=" + materias +
+                '}';
     }
 }

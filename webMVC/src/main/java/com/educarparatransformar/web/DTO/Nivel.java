@@ -1,4 +1,4 @@
-package com.educarparatransformar.web.Entity;
+package com.educarparatransformar.web.DTO;
 
 public enum Nivel {
     Inicial,

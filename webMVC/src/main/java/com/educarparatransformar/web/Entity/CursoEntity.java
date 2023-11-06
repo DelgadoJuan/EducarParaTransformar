@@ -1,5 +1,6 @@
 package com.educarparatransformar.web.Entity;
 
+import com.educarparatransformar.web.DTO.Nivel;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,32 +14,28 @@ public class CursoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String año;
-    private String seccion;
-    @OneToMany(mappedBy = "curso", orphanRemoval = true)
+    @OneToMany(mappedBy = "curso", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<EstudianteEntity> alumnosInscriptos;
     private Nivel nivel;
-    @OneToMany(mappedBy = "curso", orphanRemoval = true)
+    @OneToMany(mappedBy = "curso", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<MateriaEntity> materias;
 
     public CursoEntity() {
     }
 
-    public CursoEntity(long id, String año, String seccion, List<EstudianteEntity> alumnosInscriptos, Nivel nivel, List<MateriaEntity> materias) {
+    public CursoEntity(long id, String año, List<EstudianteEntity> alumnosInscriptos, Nivel nivel, List<MateriaEntity> materias) {
         this.id = id;
         this.año = año;
-        this.seccion = seccion;
         this.alumnosInscriptos = alumnosInscriptos;
         this.nivel = nivel;
         this.materias = materias;
     }
 
-    public CursoEntity(long id, String año, String seccion, Nivel nivel) {
-        this.id = id;
+    public CursoEntity(String año, Nivel nivel) {
         this.año = año;
-        this.seccion = seccion;
         this.nivel = nivel;
-        materias = new ArrayList<>();
-        alumnosInscriptos = new ArrayList<>();
+        this.materias = new ArrayList<>();
+        this.alumnosInscriptos = new ArrayList<>();
     }
 
     public Long getId() {
@@ -55,14 +52,6 @@ public class CursoEntity {
 
     public void setAño(String año) {
         this.año = año;
-    }
-
-    public String getSeccion() {
-        return seccion;
-    }
-
-    public void setSeccion(String seccion) {
-        this.seccion = seccion;
     }
 
     public List<EstudianteEntity> getAlumnosInscriptos() {
@@ -90,27 +79,26 @@ public class CursoEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CursoEntity that = (CursoEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(año, that.año) && Objects.equals(seccion, that.seccion) && Objects.equals(alumnosInscriptos, that.alumnosInscriptos) && nivel == that.nivel && Objects.equals(materias, that.materias);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, año, seccion, alumnosInscriptos, nivel, materias);
-    }
-
-    @Override
     public String toString() {
         return "CursoEntity{" +
                 "id=" + id +
                 ", año='" + año + '\'' +
-                ", seccion='" + seccion + '\'' +
                 ", alumnosInscriptos=" + alumnosInscriptos +
                 ", nivel=" + nivel +
                 ", materias=" + materias +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CursoEntity that = (CursoEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(año, that.año) && Objects.equals(alumnosInscriptos, that.alumnosInscriptos) && nivel == that.nivel && Objects.equals(materias, that.materias);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, año, alumnosInscriptos, nivel, materias);
     }
 }

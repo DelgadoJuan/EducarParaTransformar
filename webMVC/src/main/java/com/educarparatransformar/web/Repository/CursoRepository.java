@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface EstudianteRepository extends JpaRepository<EstudianteEntity, Long> {
-    List<EstudianteEntity> findByCurso(CursoEntity curso);
-    EstudianteEntity findByUsername(String dni);
+public interface CursoRepository extends JpaRepository<CursoEntity, Long> {
+    List<EstudianteEntity> findByAlumnosInscriptosNombre(CursoEntity nombreCurso);
+    CursoEntity findByAño(String año);
 }

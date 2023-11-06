@@ -7,44 +7,47 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "materia")
+@Table(name = "materias")
 public class MateriaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE})
-    @JoinTable(name = "profesores_materias",
-            joinColumns = @JoinColumn(name = "materia_id"),
-            inverseJoinColumns = @JoinColumn(name = "profesor_id"))
-    private List<ProfesorEntity> profesores;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ProfesorEntity profesor;
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "curso_id")
     private CursoEntity curso;
-    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<CalificacionEntity> calificaciones = new ArrayList<>();
+    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<HorarioEntity> horarios;
-    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CalificacionEntity> calificaciones;
 
     public MateriaEntity() {
     }
 
-    public MateriaEntity(long id, String nombre, List<ProfesorEntity> profesores, CursoEntity curso, List<HorarioEntity> horarios) {
+    public MateriaEntity(Long id, String nombre, ProfesorEntity profesor, CursoEntity curso, List<CalificacionEntity> calificaciones, List<HorarioEntity> horarios) {
         this.id = id;
         this.nombre = nombre;
-        this.profesores = profesores;
+        this.profesor = profesor;
         this.curso = curso;
+        this.calificaciones = calificaciones;
         this.horarios = horarios;
     }
 
-    public MateriaEntity(long id, String nombre, CursoEntity curso) {
-        this.id = id;
+    public MateriaEntity(String nombre, CursoEntity curso) {
         this.nombre = nombre;
         this.curso = curso;
-        profesores = new ArrayList<>();
-        horarios = new ArrayList<>();
+        this.calificaciones = new ArrayList<>();
+        this.horarios = new ArrayList<>();
+    }
+
+    public ProfesorEntity getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(ProfesorEntity profesor) {
+        this.profesor = profesor;
     }
 
     public Long getId() {
@@ -63,28 +66,12 @@ public class MateriaEntity {
         this.nombre = nombre;
     }
 
-    public List<ProfesorEntity> getProfesores() {
-        return profesores;
-    }
-
-    public void setProfesores(List<ProfesorEntity> profesores) {
-        this.profesores = profesores;
-    }
-
     public CursoEntity getCurso() {
         return curso;
     }
 
     public void setCurso(CursoEntity curso) {
         this.curso = curso;
-    }
-
-    public List<HorarioEntity> getHorarios() {
-        return horarios;
-    }
-
-    public void setHorarios(List<HorarioEntity> horarios) {
-        this.horarios = horarios;
     }
 
     public List<CalificacionEntity> getCalificaciones() {
@@ -95,17 +82,25 @@ public class MateriaEntity {
         this.calificaciones = calificaciones;
     }
 
+    public List<HorarioEntity> getHorarios() {
+        return horarios;
+    }
+
+    public void setHorarios(List<HorarioEntity> horarios) {
+        this.horarios = horarios;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MateriaEntity that = (MateriaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre) && Objects.equals(profesores, that.profesores) && Objects.equals(curso, that.curso) && Objects.equals(horarios, that.horarios) && Objects.equals(calificaciones, that.calificaciones);
+        MateriaEntity materia = (MateriaEntity) o;
+        return Objects.equals(id, materia.id) && Objects.equals(nombre, materia.nombre) && Objects.equals(profesor, materia.profesor) && Objects.equals(curso, materia.curso) && Objects.equals(calificaciones, materia.calificaciones) && Objects.equals(horarios, materia.horarios);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, profesores, curso, horarios, calificaciones);
+        return Objects.hash(id, nombre, profesor, curso, calificaciones, horarios);
     }
 
     @Override
@@ -113,10 +108,10 @@ public class MateriaEntity {
         return "MateriaEntity{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                ", profesores=" + profesores +
+                ", profesor=" + profesor +
                 ", curso=" + curso +
-                ", horarios=" + horarios +
                 ", calificaciones=" + calificaciones +
+                ", horarios=" + horarios +
                 '}';
     }
 }

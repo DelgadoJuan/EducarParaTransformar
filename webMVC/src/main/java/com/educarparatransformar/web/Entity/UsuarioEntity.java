@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,7 +17,7 @@ import java.util.Objects;
 public class UsuarioEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(name = "username", unique = true, nullable = false)
     @NotBlank
     private String username;
@@ -37,7 +36,6 @@ public class UsuarioEntity implements Serializable {
     private LocalDate fechaNacimiento;
     private Roles rol;
 
-
     public UsuarioEntity() {
     }
 
@@ -48,6 +46,10 @@ public class UsuarioEntity implements Serializable {
         this.password = password;
         this.fechaNacimiento = fechaNacimiento;
         this.rol = rol;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDate getFechaNacimiento() {

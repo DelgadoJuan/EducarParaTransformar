@@ -1,28 +1,36 @@
 package com.educarparatransformar.web.Entity;
 
+import com.educarparatransformar.web.DTO.Dia;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "horario")
 public class HorarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String turno;
-    private LocalDateTime inicio;
-    private LocalDateTime fin;
-    @ManyToOne
-    @JoinColumn(name = "materia_id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private MateriaEntity materia;
+    private Dia dia;
+    private LocalTime inicio;
+    private LocalTime fin;
 
     public HorarioEntity() {
     }
 
-    public HorarioEntity(String turno, LocalDateTime inicio, LocalDateTime fin) {
-        this.turno = turno;
+    public HorarioEntity(MateriaEntity materia, Dia dia, LocalTime inicio, LocalTime fin) {
+        this.materia = materia;
+        this.dia = dia;
+        this.inicio = inicio;
+        this.fin = fin;
+    }
+
+    public HorarioEntity(Long id, MateriaEntity materia, Dia dia, LocalTime inicio, LocalTime fin) {
+        this.id = id;
+        this.materia = materia;
+        this.dia = dia;
         this.inicio = inicio;
         this.fin = fin;
     }
@@ -35,30 +43,6 @@ public class HorarioEntity {
         this.id = id;
     }
 
-    public String getTurno() {
-        return turno;
-    }
-
-    public void setTurno(String turno) {
-        this.turno = turno;
-    }
-
-    public LocalDateTime getInicio() {
-        return inicio;
-    }
-
-    public void setInicio(LocalDateTime inicio) {
-        this.inicio = inicio;
-    }
-
-    public LocalDateTime getFin() {
-        return fin;
-    }
-
-    public void setFin(LocalDateTime fin) {
-        this.fin = fin;
-    }
-
     public MateriaEntity getMateria() {
         return materia;
     }
@@ -67,27 +51,51 @@ public class HorarioEntity {
         this.materia = materia;
     }
 
+    public Dia getDia() {
+        return dia;
+    }
+
+    public void setDia(Dia dia) {
+        this.dia = dia;
+    }
+
+    public LocalTime getInicio() {
+        return inicio;
+    }
+
+    public void setInicio(LocalTime inicio) {
+        this.inicio = inicio;
+    }
+
+    public LocalTime getFin() {
+        return fin;
+    }
+
+    public void setFin(LocalTime fin) {
+        this.fin = fin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HorarioEntity that = (HorarioEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(turno, that.turno) && Objects.equals(inicio, that.inicio) && Objects.equals(fin, that.fin) && Objects.equals(materia, that.materia);
+        return Objects.equals(id, that.id) && Objects.equals(materia, that.materia) && dia == that.dia && Objects.equals(inicio, that.inicio) && Objects.equals(fin, that.fin);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, turno, inicio, fin, materia);
+        return Objects.hash(id, materia, dia, inicio, fin);
     }
 
     @Override
     public String toString() {
         return "HorarioEntity{" +
                 "id=" + id +
-                ", turno='" + turno + '\'' +
+                ", materia=" + materia +
+                ", dia=" + dia +
                 ", inicio=" + inicio +
                 ", fin=" + fin +
-                ", materia=" + materia +
                 '}';
     }
 }

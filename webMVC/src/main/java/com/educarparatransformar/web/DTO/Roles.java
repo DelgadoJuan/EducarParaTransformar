@@ -1,9 +1,9 @@
 package com.educarparatransformar.web.DTO;
 
 public enum Roles {
-    ADMIN,
-    PROFESOR,
-    ESTUDIANTE,
-    TITULAR,
-    INVITADO
+    Admin,
+    Profesor,
+    Estudiante,
+    Titular,
+    Personal
 }

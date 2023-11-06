@@ -2,13 +2,16 @@ package com.educarparatransformar.web.Service.Implement;
 
 import com.educarparatransformar.web.Converter.UsuarioDtoToEstudianteEntityConverter;
 import com.educarparatransformar.web.Converter.UsuarioDtoToProfesorEntityConverter;
+import com.educarparatransformar.web.Converter.UsuarioDtoToTitularEntityConverter;
 import com.educarparatransformar.web.DTO.Roles;
 import com.educarparatransformar.web.DTO.UsuarioDto;
 import com.educarparatransformar.web.Entity.EstudianteEntity;
 import com.educarparatransformar.web.Entity.ProfesorEntity;
+import com.educarparatransformar.web.Entity.TitularEntity;
 import com.educarparatransformar.web.Entity.UsuarioEntity;
 import com.educarparatransformar.web.Repository.EstudianteRepository;
 import com.educarparatransformar.web.Repository.ProfesorRepository;
+import com.educarparatransformar.web.Repository.TitularRepository;
 import com.educarparatransformar.web.Repository.UsuarioRepository;
 import com.educarparatransformar.web.Security.UserPrincipal;
 import com.educarparatransformar.web.Service.UsuarioService;
@@ -37,19 +40,25 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     ProfesorRepository profesorRepository;
     @Autowired
+    TitularRepository titularRepository;
+    @Autowired
     Converter<UsuarioDto, UsuarioEntity> UsuarioDtoToEntityConverter;
     @Autowired
     Converter<UsuarioDto, EstudianteEntity> UsuarioDtoToEstudianteEntityConverter;
     @Autowired
     Converter<UsuarioDto, ProfesorEntity> UsuarioDtoToProfesorEntityConverter;
+    @Autowired
+    Converter<UsuarioDto, TitularEntity> UsuarioDtoToTitularEntityConverter;
 
     @Override
     public Boolean agregar(UsuarioDto usuarioDto) {
         usuarioDto.setPassword(passwordEncoder.encode(usuarioDto.getPassword()));
-        if (usuarioDto.getRol().equals(Roles.ESTUDIANTE)) {
+        if (usuarioDto.getRol().equals(Roles.Estudiante)) {
             estudianteRepository.save(UsuarioDtoToEstudianteEntityConverter.convert(usuarioDto));
-        } else if (usuarioDto.getRol().equals(Roles.PROFESOR)) {
+        } else if (usuarioDto.getRol().equals(Roles.Profesor)) {
             profesorRepository.save(UsuarioDtoToProfesorEntityConverter.convert(usuarioDto));
+        } else if(usuarioDto.getRol().equals(Roles.Titular)) {
+            titularRepository.save(UsuarioDtoToTitularEntityConverter.convert(usuarioDto));
         } else {
             usuarioRepository.save(UsuarioDtoToEntityConverter.convert(usuarioDto));
         }

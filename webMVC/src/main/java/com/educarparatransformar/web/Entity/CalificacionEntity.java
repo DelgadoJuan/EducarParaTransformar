@@ -2,8 +2,6 @@ package com.educarparatransformar.web.Entity;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity
 @Table(name = "calificacion")
 public class CalificacionEntity {
@@ -12,13 +10,25 @@ public class CalificacionEntity {
     private Long id;
     private int nota;
     private String descripcion;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private EstudianteEntity alumno;
-    @ManyToOne
-    @JoinColumn(name = "materia_id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private MateriaEntity materia;
 
     public CalificacionEntity() {
+    }
+
+    public CalificacionEntity(int nota, String descripcion, EstudianteEntity alumno, MateriaEntity materia) {
+        this.nota = nota;
+        this.descripcion = descripcion;
+        this.alumno = alumno;
+        this.materia = materia;
+    }
+
+    public CalificacionEntity(int nota, String descripcion, MateriaEntity materia) {
+        this.nota = nota;
+        this.descripcion = descripcion;
+        this.materia = materia;
     }
 
     public CalificacionEntity(long id, int nota, String descripcion, EstudianteEntity alumno, MateriaEntity materia) {
@@ -67,29 +77,5 @@ public class CalificacionEntity {
 
     public void setMateria(MateriaEntity materia) {
         this.materia = materia;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CalificacionEntity that = (CalificacionEntity) o;
-        return nota == that.nota && Objects.equals(id, that.id) && Objects.equals(descripcion, that.descripcion) && Objects.equals(alumno, that.alumno) && Objects.equals(materia, that.materia);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nota, descripcion, alumno, materia);
-    }
-
-    @Override
-    public String toString() {
-        return "CalificacionEntity{" +
-                "id=" + id +
-                ", nota=" + nota +
-                ", descripcion='" + descripcion + '\'' +
-                ", alumno=" + alumno +
-                ", materia=" + materia +
-                '}';
     }
 }
