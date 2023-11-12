@@ -378,27 +378,21 @@ public class PagoCuota extends javax.swing.JFrame {
                 contenido.endText();
                 contenido.close();
 
-
                 String nombreArchivo = "ComprobantePago-" + mesLabel.getText() + LocalDate.now().getYear() + ".pdf";
-                FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+                String nombreCarpetaPDF = "Descargas EPT";
+                String rutaCarpetaPDF = "C:" + File.separator + nombreCarpetaPDF;
 
-                // Obtenemos el directorio de descargas del usuario
-                File downloadsDir = fileSystemView.getDefaultDirectory();
-
-                // Comprobamos si existe la carpeta de descargas
-                if (downloadsDir != null && downloadsDir.exists()) {
-                    // Ruta completa del archivo a guardar en la carpeta de descargas
-                    String directorioDestino = downloadsDir.getAbsolutePath() + File.separator + nombreArchivo;
-                    documento.save(directorioDestino);
-                    JOptionPane.showMessageDialog(null, "Comprobante descargado correctamente en su carpeta Documentos");
-                } else {
-                    System.out.println("No se encontró la carpeta de documentos del usuario");
+                File carpetaPDF = new File(rutaCarpetaPDF);
+                if (!carpetaPDF.exists()) {
+                    carpetaPDF.mkdir(); // Crea la carpeta si no existe
                 }
-                //documento.save(directorioDestino);
-                //JOptionPane.showMessageDialog(null, "Comprobante descargado correctamente");
+
+                String directorioDestino = rutaCarpetaPDF + File.separator + nombreArchivo;
+                documento.save(directorioDestino);
+                JOptionPane.showMessageDialog(null, "Comprobante descargado en Disco C:");
                 this.dispose();
             }catch(Exception err){
-                System.out.println(" " + err);
+                JOptionPane.showMessageDialog(null, "No se pudo descargar el PDF");
             }
         }
     }//GEN-LAST:event_pagoButtonActionPerformed
