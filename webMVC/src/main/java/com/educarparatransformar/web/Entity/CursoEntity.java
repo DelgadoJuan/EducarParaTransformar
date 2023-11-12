@@ -1,6 +1,4 @@
 package com.educarparatransformar.web.Entity;
-
-import com.educarparatransformar.web.DTO.Nivel;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

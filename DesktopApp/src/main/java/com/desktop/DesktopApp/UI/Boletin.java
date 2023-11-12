@@ -7,6 +7,8 @@ package com.desktop.DesktopApp.UI;
 import com.desktop.DesktopApp.Entity.*;
 import com.desktop.DesktopApp.Repository.UsuarioRepository;
 import com.desktop.DesktopApp.Swing.BoletinTableModel;
+
+import javax.swing.*;
 import java.awt.Color;
 
 /**
@@ -35,11 +37,18 @@ public class Boletin extends javax.swing.JFrame {
         } else {
             estudiante = (EstudianteEntity) usuario;
         }
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         cargarTabla();
         this.setVisible(true);
     }
 
     private void cargarTabla() {
+        if(estudiante == null || estudiante.getCurso() == null || estudiante.getCalificaciones() == null){
+            JOptionPane.showMessageDialog(null, "Error al cargar la tabla, faltan datos");
+        }
+        else{
+
+
         for (MateriaEntity materia: estudiante.getCurso().getMaterias()) {
             String notas = "";
             for (CalificacionEntity calificacion: estudiante.getCalificaciones()) {
@@ -53,6 +62,7 @@ public class Boletin extends javax.swing.JFrame {
             boletinTableModel.addRow(new Object[] {materia.getNombre(), notas});
         }
         jTable1.setModel(boletinTableModel);
+    }
     }
 
     /**
@@ -69,17 +79,19 @@ public class Boletin extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(930, 550));
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle(" ");
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(78, 170, 233));
+        jPanel1.setBackground(new java.awt.Color(13, 14, 35));
 
-        label1.setBackground(new java.awt.Color(78, 170, 233));
+        label1.setBackground(new java.awt.Color(13, 14, 35));
         label1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        label1.setForeground(new java.awt.Color(255, 255, 255));
+        label1.setForeground(new java.awt.Color(204, 204, 204));
         label1.setText("Boletín");
 
+        jTable1.setBackground(new java.awt.Color(27, 28, 49));
+        jTable1.setForeground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -90,19 +102,32 @@ public class Boletin extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable1.setToolTipText("");
+        jTable1.setFocusable(false);
+        jTable1.setGridColor(new java.awt.Color(59, 60, 91));
+        jTable1.setSelectionForeground(new java.awt.Color(204, 204, 204));
         jTable1.setShowGrid(false);
+        jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 30, Short.MAX_VALUE)
-                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 899, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,7 +135,7 @@ public class Boletin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

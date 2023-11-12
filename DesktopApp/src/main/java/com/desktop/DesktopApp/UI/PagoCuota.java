@@ -12,6 +12,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.*;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -22,10 +23,14 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 /**
@@ -34,18 +39,37 @@ import java.util.Properties;
  */
 public class PagoCuota extends javax.swing.JFrame {
 
-    private TitularEntity titular;
+    private static TitularEntity titular;
     private PagoRepository pagoRepository;
 
     /**
      * Creates new form PagoCuota
      */
-    public PagoCuota(UsuarioEntity usuario, String mes, PagoRepository pagoRepository) {
+    public PagoCuota(UsuarioEntity usuario, String mes, String monto, PagoRepository pagoRepository) {
         initComponents();
         this.titular = (TitularEntity) usuario;
         this.pagoRepository = pagoRepository;
+        this.montoLabel.setText(monto);
         this.mesLabel.setText(mes);
-        this.montoLabel.setText((String.valueOf(10000)));
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        tipoComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (tipoComboBox.getSelectedItem().equals("Efectivo")) {
+                    nombreField.setEnabled(false);
+                    codigoField.setEnabled(false);
+                    numeroField.setEnabled(false);
+                    vencimientoAñoField.setEnabled(false);
+                    vencimientoMesField.setEnabled(false);
+                } else {
+                    nombreField.setEnabled(true);
+                    codigoField.setEnabled(true);
+                    numeroField.setEnabled(true);
+                    vencimientoAñoField.setEnabled(true);
+                    vencimientoMesField.setEnabled(true);
+                }
+            }
+        });
         this.setVisible(true);
     }
 
@@ -76,8 +100,8 @@ public class PagoCuota extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         nombreField = new javax.swing.JTextField();
         numeroField = new javax.swing.JTextField();
-        montoLabel = new javax.swing.JLabel();
         mesLabel = new javax.swing.JLabel();
+        montoLabel = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         tipoComboBox = new javax.swing.JComboBox<>();
@@ -91,11 +115,11 @@ public class PagoCuota extends javax.swing.JFrame {
         jTextArea3.setRows(5);
         jScrollPane3.setViewportView(jTextArea3);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(" ");
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("  ");
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(27, 28, 49));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -118,7 +142,7 @@ public class PagoCuota extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(153, 153, 153));
         jLabel6.setText("Código de seguridad");
 
-        pagoButton.setBackground(new java.awt.Color(78, 170, 233));
+        pagoButton.setBackground(new java.awt.Color(49, 49, 84));
         pagoButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         pagoButton.setForeground(new java.awt.Color(255, 255, 255));
         pagoButton.setText("Pagar");
@@ -130,7 +154,8 @@ public class PagoCuota extends javax.swing.JFrame {
             }
         });
 
-        codigoField.setForeground(new java.awt.Color(102, 102, 102));
+        codigoField.setBackground(new java.awt.Color(27, 28, 49));
+        codigoField.setForeground(new java.awt.Color(255, 255, 255));
         codigoField.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
         codigoField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,10 +163,12 @@ public class PagoCuota extends javax.swing.JFrame {
             }
         });
 
-        vencimientoMesField.setForeground(new java.awt.Color(102, 102, 102));
+        vencimientoMesField.setBackground(new java.awt.Color(27, 28, 49));
+        vencimientoMesField.setForeground(new java.awt.Color(255, 255, 255));
         vencimientoMesField.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
 
-        vencimientoAñoField.setForeground(new java.awt.Color(102, 102, 102));
+        vencimientoAñoField.setBackground(new java.awt.Color(27, 28, 49));
+        vencimientoAñoField.setForeground(new java.awt.Color(255, 255, 255));
         vencimientoAñoField.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -152,29 +179,36 @@ public class PagoCuota extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(153, 153, 153));
         jLabel7.setText("Mes");
 
-        nombreField.setForeground(new java.awt.Color(102, 102, 102));
+        nombreField.setBackground(new java.awt.Color(27, 28, 49));
+        nombreField.setForeground(new java.awt.Color(255, 255, 255));
         nombreField.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
 
-        numeroField.setForeground(new java.awt.Color(102, 102, 102));
+        numeroField.setBackground(new java.awt.Color(27, 28, 49));
+        numeroField.setForeground(new java.awt.Color(255, 255, 255));
         numeroField.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
 
-        montoLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        montoLabel.setForeground(new java.awt.Color(78, 170, 233));
-        montoLabel.setText("jLabel8");
-
         mesLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        mesLabel.setForeground(new java.awt.Color(78, 170, 233));
-        mesLabel.setText("jLabel7");
+        mesLabel.setForeground(new java.awt.Color(255, 255, 255));
+        mesLabel.setText("jLabel8");
+
+        montoLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        montoLabel.setForeground(new java.awt.Color(255, 255, 255));
+        montoLabel.setText("jLabel7");
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(78, 170, 233));
+        jLabel9.setForeground(new java.awt.Color(62, 62, 123));
         jLabel9.setText("Administrar Pago");
 
         jLabel10.setForeground(new java.awt.Color(153, 153, 153));
         jLabel10.setText("Complete con los detalles para realizar el pago");
 
+        tipoComboBox.setBackground(new java.awt.Color(27, 28, 49));
+        tipoComboBox.setForeground(new java.awt.Color(255, 255, 255));
         tipoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Credito", "Debito", "Efectivo" }));
+        tipoComboBox.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("Tipo de pago");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -184,14 +218,14 @@ public class PagoCuota extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel3)
-                    .addComponent(codigoField, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(numeroField, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(nombreField, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel10)
+                        .addComponent(jLabel9)
+                        .addComponent(jLabel3)
+                        .addComponent(nombreField, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
+                        .addComponent(numeroField)
+                        .addComponent(codigoField, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,21 +236,20 @@ public class PagoCuota extends javax.swing.JFrame {
                                         .addComponent(jLabel1))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(montoLabel)
-                                        .addComponent(mesLabel)))
-                                .addComponent(vencimientoMesField, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                                        .addComponent(mesLabel)
+                                        .addComponent(montoLabel)))
+                                .addComponent(jLabel6)
+                                .addComponent(vencimientoMesField, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(54, 54, 54)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(pagoButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(vencimientoAñoField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel8)))))
-                .addContainerGap(65, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(91, 91, 91)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tipoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(283, 283, 283))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(pagoButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel5)
+                                        .addComponent(tipoComboBox, 0, 286, Short.MAX_VALUE)))
+                                .addComponent(jLabel8)
+                                .addComponent(vencimientoAñoField, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,11 +258,7 @@ public class PagoCuota extends javax.swing.JFrame {
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10)
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tipoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -238,13 +267,17 @@ public class PagoCuota extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(numeroField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24)
-                .addComponent(jLabel6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(codigoField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(codigoField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tipoComboBox))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(vencimientoAñoField)
@@ -254,11 +287,11 @@ public class PagoCuota extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(mesLabel))
+                            .addComponent(montoLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(montoLabel)))
+                            .addComponent(mesLabel)))
                     .addComponent(pagoButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(49, 49, 49))
         );
@@ -273,25 +306,6 @@ public class PagoCuota extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        tipoComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (tipoComboBox.getSelectedItem().toString().equals("Efectivo")) {
-                    numeroField.setEnabled(false);
-                    codigoField.setEnabled(false);
-                    vencimientoMesField.setEnabled(false);
-                    vencimientoAñoField.setEnabled(false);
-                    nombreField.setEnabled(false);
-                } else {
-                    numeroField.setEnabled(true);
-                    codigoField.setEnabled(true);
-                    vencimientoMesField.setEnabled(true);
-                    vencimientoAñoField.setEnabled(true);
-                    nombreField.setEnabled(true);
-                }
-            }
-        });
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -308,11 +322,14 @@ public class PagoCuota extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Número de tarjeta no válido");
                 valido = false;
             }
-            if (Integer.parseInt(vencimientoMesField.getText()) < 1 || Integer.parseInt(vencimientoMesField.getText()) > 12 || Integer.parseInt(vencimientoAñoField.getText()) < 24) {
+            if (vencimientoMesField.getText().isBlank() || vencimientoAñoField.getText().isBlank() ||
+            Integer.parseInt(vencimientoMesField.getText()) < 1 ||
+                    Integer.parseInt(vencimientoMesField.getText()) > 12 || Integer.parseInt(vencimientoAñoField.getText()) < 24) {
                 JOptionPane.showMessageDialog(null, "Fecha de vencimiento no válida");
                 valido = false;
             }
-            if (codigoField.getText().length() != 3 && !codigoField.getText().matches("\\d*")) {
+            if (codigoField.getText().length() != 3 ||
+                    !codigoField.getText().matches("\\d*") || codigoField.getText().isBlank()) {
                 JOptionPane.showMessageDialog(null, "Código de seguridad no válido");
                 valido = false;
             }
@@ -329,28 +346,63 @@ public class PagoCuota extends javax.swing.JFrame {
                 documento.addPage(pagina);
                 PDPageContentStream contenido = new PDPageContentStream(documento, pagina);
 
+                PDImageXObject logo = PDImageXObject.createFromFile("src/main/resources/images/logo 100px.png", documento);
+                float logoWidth = 60; // Ancho del logo en puntos
+                float logoHeight = 60; // Altura del logo en puntos
+                contenido.drawImage(logo, 10, pagina.getMediaBox().getHeight() - logoHeight - 10, logoWidth, logoHeight);
+
                 contenido.beginText();
-                contenido.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 14);
-                contenido.newLineAtOffset(20, pagina.getMediaBox().getHeight()-52);
-                contenido.showText("COMPROBANTE DE PAGO " + mesLabel.getText());
-                contenido.newLineAtOffset(0, -15);
-                contenido.showText("TOTAL $" + montoLabel.getText());
-                contenido.newLineAtOffset(0, -15);
-                contenido.showText("ALUMNO " + titular.getHijo().getNombre());
+                contenido.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 16);
+                String titulo = "Comprobante de pago";
+                float anchoTitulo = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD).getStringWidth(titulo) / 1000 * 18; // Ancho del título en puntos
+                float xTitulo = (pagina.getMediaBox().getWidth() - anchoTitulo) / 2; // Centrar en el eje X
+                float yTitulo = pagina.getMediaBox().getHeight() - 100; // Posición fija en el eje Y
+                contenido.newLineAtOffset(xTitulo, yTitulo);
+                contenido.showText(titulo);
+
+                contenido.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 10);
+                contenido.newLineAtOffset(-40, -40);
+                contenido.showText("Numero de comprobante: " + pagoRepository.findAll().size());
+                contenido.newLineAtOffset(0, -20);
+                contenido.showText("Datos del colegio: Educar Para Transformar");
+                contenido.newLineAtOffset(0, -20);
+                contenido.showText("Mes pagado:  " + mesLabel.getText());
+                contenido.newLineAtOffset(0, -20);
+                contenido.showText("Tipo de pago: " + tipoComboBox.getSelectedItem());
+                contenido.newLineAtOffset(0, -20);
+                contenido.showText("Monto: " + montoLabel.getText());
+                contenido.newLineAtOffset(0, -20);
+                contenido.showText("Fecha:  " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                contenido.newLineAtOffset(0, -20);
+                contenido.showText("Alumno: " + titular.getHijo().getNombre());
                 contenido.endText();
                 contenido.close();
 
-                String nombreUsuario = System.getProperty("user.name");
-                String nombreArchivo = "ComprobantePago-" + mesLabel.getText() + ".pdf";
-                String directorioDestino = "D:\\Datos de Usuario\\" + nombreUsuario + "\\Downloads\\" + nombreArchivo;
-                documento.save(directorioDestino);
-                //sendMail(documento);
+
+                String nombreArchivo = "ComprobantePago-" + mesLabel.getText() + LocalDate.now().getYear() + ".pdf";
+                FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+
+                // Obtenemos el directorio de descargas del usuario
+                File downloadsDir = fileSystemView.getDefaultDirectory();
+
+                // Comprobamos si existe la carpeta de descargas
+                if (downloadsDir != null && downloadsDir.exists()) {
+                    // Ruta completa del archivo a guardar en la carpeta de descargas
+                    String directorioDestino = downloadsDir.getAbsolutePath() + File.separator + nombreArchivo;
+                    documento.save(directorioDestino);
+                    JOptionPane.showMessageDialog(null, "Comprobante descargado correctamente en su carpeta Documentos");
+                } else {
+                    System.out.println("No se encontró la carpeta de documentos del usuario");
+                }
+                //documento.save(directorioDestino);
+                //JOptionPane.showMessageDialog(null, "Comprobante descargado correctamente");
                 this.dispose();
             }catch(Exception err){
                 System.out.println(" " + err);
             }
         }
     }//GEN-LAST:event_pagoButtonActionPerformed
+
 
     private void sendMail(PDDocument pdfDocument) {
         String FromEmail = "ncerezo855@gmail.com";
@@ -403,6 +455,8 @@ public class PagoCuota extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField codigoField;

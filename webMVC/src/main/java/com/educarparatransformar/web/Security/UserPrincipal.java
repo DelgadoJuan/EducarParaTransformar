@@ -1,6 +1,5 @@
 package com.educarparatransformar.web.Security;
 
-import com.educarparatransformar.web.DTO.Roles;
 import com.educarparatransformar.web.Entity.UsuarioEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

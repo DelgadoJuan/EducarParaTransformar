@@ -4,78 +4,67 @@
  */
 package com.desktop.DesktopApp.UI;
 
-import com.desktop.DesktopApp.Entity.*;
-import com.desktop.DesktopApp.Repository.UsuarioRepository;
-import com.desktop.DesktopApp.Swing.HorarioTableModel;
+import com.desktop.DesktopApp.Entity.Mes;
+import com.desktop.DesktopApp.Entity.PagoEntity;
+import com.desktop.DesktopApp.Entity.TitularEntity;
+import com.desktop.DesktopApp.Repository.TitularRepository;
+import com.desktop.DesktopApp.Swing.MorosoTableModel;
 
 import javax.swing.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Juan
  */
-public class Horarios extends javax.swing.JFrame {
-    private UsuarioEntity usuario;
-    private HorarioTableModel horarioTableModel = new HorarioTableModel();
+public class Morosos extends javax.swing.JFrame {
+
+    private TitularRepository titularRepository;
+    private MorosoTableModel morosoTableModel = new MorosoTableModel();
 
     /**
-     * Creates new form Horarios
+     * Creates new form Morosos
      */
-    public Horarios(Long usuarioId, UsuarioRepository usuarioRepository) {
+    public Morosos(TitularRepository titularRepository) {
+        this.titularRepository = titularRepository;
         initComponents();
-        this.usuario = usuarioRepository.findById(usuarioId).orElseThrow();
+        jTable1.setModel(morosoTableModel);
         cargarTabla();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 
-    private void cargarTabla (){
-        if (usuario.getRol().equals(Roles.Profesor)) {
-            ProfesorEntity profesor = (ProfesorEntity) usuario;
-            if (!profesor.getMaterias().isEmpty()) {
-                for (MateriaEntity materia : profesor.getMaterias()) {
-                    String horarios = "";
-                    for (HorarioEntity horario : materia.getHorarios()) {
-                        horarios += horario.getDia() + " " + horario.getInicio() + "-" + horario.getFin();
-                        if (materia.getHorarios().indexOf(horario) < materia.getHorarios().size() - 1) {
-                            horarios += ", ";
-                        }
-                    }
-                    horarioTableModel.addRow(new Object[]{materia.getNombre(), horarios});
-                }
-                jTable1.setModel(horarioTableModel);
+    private void cargarTabla() {
+        morosoTableModel.setRowCount(0);
+        for (TitularEntity titular: titularRepository.findAll()) {
+            List<Mes> mesesPagados = new ArrayList<>();
+            List<PagoEntity> pagos = titular.getCuotasPagadas();
+            List<Mes> mesesNoPagados = new ArrayList<>();
+            for (PagoEntity pago : pagos) {
+                mesesPagados.add(pago.getMes());
             }
-        } else if (usuario.getRol().equals(Roles.Titular)) {
-            TitularEntity titular = (TitularEntity) usuario;
-            if (!titular.getHijo().getCurso().getMaterias().isEmpty()) {
-                for (MateriaEntity materia : titular.getHijo().getCurso().getMaterias()) {
-                    String horarios = "";
-                    for (HorarioEntity horario : materia.getHorarios()) {
-                        horarios += horario.getDia() + " " + horario.getInicio() + "-" + horario.getFin();
-                        if (materia.getHorarios().indexOf(horario) < materia.getHorarios().size() - 1) {
-                            horarios += ", ";
-                        }
-                    }
-                    horarioTableModel.addRow(new Object[]{materia.getNombre(), horarios});
+
+            for (Mes mes : Mes.values()) {
+                if (!mesesPagados.contains(mes)) {
+                    mesesNoPagados.add(mes);
                 }
-                jTable1.setModel(horarioTableModel);
             }
-        } else {
-            EstudianteEntity estudiante = (EstudianteEntity) usuario;
-            if (!estudiante.getCurso().getMaterias().isEmpty()) {
-                for (MateriaEntity materia : estudiante.getCurso().getMaterias()) {
-                    String horarios = "";
-                    for (HorarioEntity horario : materia.getHorarios()) {
-                        horarios += horario.getDia() + " " + horario.getInicio() + "-" + horario.getFin();
-                        if (materia.getHorarios().indexOf(horario) < materia.getHorarios().size() - 1) {
-                            horarios += ", ";
-                        }
-                    }
-                    horarioTableModel.addRow(new Object[]{materia.getNombre(), horarios});
+
+            int cantMesesAdeudados = 0;
+            for (Mes mes : mesesNoPagados) {
+                if ((LocalDateTime.now().getMonth().getValue() == mes.ordinal() + 3 &&
+                        LocalDateTime.now().getDayOfMonth() > 15) ||
+                        LocalDate.now().getMonth().getValue() > mes.ordinal() + 3) {
+                    cantMesesAdeudados++;
                 }
-                jTable1.setModel(horarioTableModel);
             }
+            morosoTableModel.addRow(new Object[] {titular.getHijo().getUsername(),
+                    titular.getHijo().getNombre(), cantMesesAdeudados});
         }
+        jTable1.setModel(morosoTableModel);
     }
 
     /**
@@ -100,7 +89,7 @@ public class Horarios extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Horarios");
+        jLabel1.setText("Alumnos morosos");
 
         jTable1.setBackground(new java.awt.Color(27, 28, 49));
         jTable1.setForeground(new java.awt.Color(255, 255, 255));
@@ -123,7 +112,7 @@ public class Horarios extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(36, 36, 36)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );

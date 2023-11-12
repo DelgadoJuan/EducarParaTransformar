@@ -1,7 +1,5 @@
 package com.educarparatransformar.web.Entity;
 
-import com.educarparatransformar.web.DTO.Mes;
-import com.educarparatransformar.web.DTO.TipoPago;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 

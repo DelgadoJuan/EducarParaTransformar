@@ -40,4 +40,12 @@ public class TitularEntity extends UsuarioEntity{
     public void setHijo(EstudianteEntity hijo) {
         this.hijo = hijo;
     }
+
+    public List<PagoEntity> getCuotasPagadas() {
+        return cuotasPagadas;
+    }
+
+    public void setCuotasPagadas(List<PagoEntity> cuotasPagadas) {
+        this.cuotasPagadas = cuotasPagadas;
+    }
 }

@@ -38,6 +38,11 @@ public class EstudianteEntity extends UsuarioEntity {
         this.curso = curso;
     }
 
+    public EstudianteEntity(String username, String nombre, String email, String password, LocalDate fechaNacimiento, Roles rol) {
+        super(username, nombre, email, password, fechaNacimiento, rol);
+        this.calificaciones = new ArrayList<>();
+    }
+
     public List<CalificacionEntity> getCalificaciones() {
         return calificaciones;
     }

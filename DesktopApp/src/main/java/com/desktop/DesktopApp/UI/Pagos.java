@@ -12,8 +12,11 @@ import com.desktop.DesktopApp.Repository.PagoRepository;
 import com.desktop.DesktopApp.Repository.UsuarioRepository;
 import com.desktop.DesktopApp.Swing.PagoTableModel;
 
+import javax.swing.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -33,11 +36,13 @@ public class Pagos extends javax.swing.JFrame {
         this.usuario = usuarioRepository.findById(usuarioId).orElseThrow();
         this.pagoRepository = pagoRepository;
         cargarTabla();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 
     private void cargarTabla() {
-        List<Mes> mesesPagados = new ArrayList<>();
+        pagoTableModel.setRowCount(0);
+        /*List<Mes> mesesPagados = new ArrayList<>();
         List<PagoEntity> pagos = pagoRepository.findAll();
         List<Mes> mesesNoPagados = new ArrayList<>();
         for (PagoEntity pago : pagos) {
@@ -51,9 +56,30 @@ public class Pagos extends javax.swing.JFrame {
         }
 
         for (Mes mes : mesesNoPagados) {
-            pagoTableModel.addRow(new Object[] {mes.name(), 10000});
-        }
+            double monto = 10000;
+            LocalDateTime now = LocalDateTime.now();
+            if (now.getMonth().getValue() - 1 == mes.ordinal() && now.getDayOfMonth() > 15) {
+                monto = monto + (monto * 0.1);
+            } else if(now.getMonth().getValue() - 1 > mes.ordinal()){
+                monto = monto + (monto * 0.2);
+            }*/
+        List<Mes> mesesPagados = pagoRepository.findAll().stream()
+                .map(PagoEntity::getMes)
+                .collect(Collectors.toList());
 
+        double monto;
+        for (Mes mes : Mes.values()) {
+            if (!mesesPagados.contains(mes)) {
+                monto = 10000;
+                LocalDateTime now = LocalDateTime.now();
+                if (now.getMonthValue() == mes.ordinal() + 3 && now.getDayOfMonth() > 15) {
+                    monto += monto * 0.1;
+                } else if (now.getMonthValue() > mes.ordinal() + 3) {
+                    monto += monto * 0.2;
+                }
+                pagoTableModel.addRow(new Object[] {mes.name(), monto});
+            }
+        }
         jTable1.setModel(pagoTableModel);
     }
 
@@ -72,15 +98,17 @@ public class Pagos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle(" ");
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(78, 170, 233));
+        jPanel1.setBackground(new java.awt.Color(13, 14, 35));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Cuotas a pagar");
 
+        pagarButton.setForeground(new java.awt.Color(51, 51, 51));
         pagarButton.setText("Pagar");
         pagarButton.setBorder(null);
         pagarButton.addActionListener(new java.awt.event.ActionListener() {
@@ -89,6 +117,8 @@ public class Pagos extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setBackground(new java.awt.Color(27, 28, 49));
+        jTable1.setForeground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -112,7 +142,7 @@ public class Pagos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pagarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 930, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,7 +154,7 @@ public class Pagos extends javax.swing.JFrame {
                         .addGap(3, 3, 3)
                         .addComponent(pagarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -142,7 +172,8 @@ public class Pagos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pagarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagarButtonActionPerformed
-        PagoCuota pagoCuota = new PagoCuota(usuario, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 0), pagoRepository);
+        PagoCuota pagoCuota = new PagoCuota(usuario, (String) jTable1.getValueAt(jTable1.getSelectedRow(), 0),
+                jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString(), pagoRepository);
     }//GEN-LAST:event_pagarButtonActionPerformed
 
 

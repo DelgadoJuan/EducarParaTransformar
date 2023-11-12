@@ -1,6 +1,5 @@
 package com.educarparatransformar.web.Entity;
 
-import com.educarparatransformar.web.DTO.Roles;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

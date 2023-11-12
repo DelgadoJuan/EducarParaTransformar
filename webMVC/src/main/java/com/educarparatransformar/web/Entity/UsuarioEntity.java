@@ -1,6 +1,5 @@
 package com.educarparatransformar.web.Entity;
 
-import com.educarparatransformar.web.DTO.Roles;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

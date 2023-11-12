@@ -44,14 +44,17 @@ public class Dashboard extends javax.swing.JFrame {
         this.horarioRepository = horarioRepository;
 
         initComponents();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.jLabel3.setText("¡Bienvenido " + usuario.getNombre().split("\\s+")[0] + "!");
 
         // Obtiene la resolución de pantalla actual.
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        int taskbarHeight = 40;
+        int height = screenSize.height - taskbarHeight;
         // Establece el tamaño del JFrame al tamaño de la pantalla.
-        this.setSize(screenSize);
-
-        this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        this.setSize(screenSize.width, height);
 
         ocultarBotones();
 
@@ -74,19 +77,21 @@ public class Dashboard extends javax.swing.JFrame {
                 BoletinButton.setVisible(false);
                 CuotaButton.setVisible(false);
                 administracionButton.setVisible(false);
+                morososButton.setVisible(false);
                 break;
             case "Estudiante":
                 administracionButton.setVisible(false);
                 InformesButton1.setVisible(false);
                 CuotaButton.setVisible(false);
                 AlumnoButton.setVisible(false);
+                morososButton.setVisible(false);
                 break;
-                case "Titular":
-                    administracionButton.setVisible(false);
-                    AlumnoButton.setVisible(false);
-                    InformesButton1.setVisible(false);
-                    break;
-
+            case "Titular":
+                administracionButton.setVisible(false);
+                AlumnoButton.setVisible(false);
+                InformesButton1.setVisible(false);
+                morososButton.setVisible(false);
+                break;
         }
     }
 
@@ -106,10 +111,12 @@ public class Dashboard extends javax.swing.JFrame {
         HorarioButton = new javax.swing.JButton();
         CuotaButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
         administracionButton = new javax.swing.JButton();
         InformesButton1 = new javax.swing.JButton();
-        morososButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        morososButton = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -122,18 +129,19 @@ public class Dashboard extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(" ");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("  ");
         setBackground(new java.awt.Color(27, 28, 49));
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setResizable(false);
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBackground(new java.awt.Color(13, 14, 35));
 
-        AlumnoButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        AlumnoButton.setForeground(new java.awt.Color(113, 187, 237));
+        AlumnoButton.setBackground(new java.awt.Color(49, 49, 84));
+        AlumnoButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        AlumnoButton.setForeground(new java.awt.Color(204, 204, 204));
         AlumnoButton.setText("Alumnos");
-        AlumnoButton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(203, 231, 250)));
+        AlumnoButton.setBorder(null);
         AlumnoButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         AlumnoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,10 +149,11 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        BoletinButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        BoletinButton.setForeground(new java.awt.Color(113, 187, 237));
+        BoletinButton.setBackground(new java.awt.Color(49, 49, 84));
+        BoletinButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        BoletinButton.setForeground(new java.awt.Color(204, 204, 204));
         BoletinButton.setText("Boletín");
-        BoletinButton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(203, 231, 250)));
+        BoletinButton.setBorder(null);
         BoletinButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BoletinButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,10 +161,11 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        HorarioButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        HorarioButton.setForeground(new java.awt.Color(113, 187, 237));
+        HorarioButton.setBackground(new java.awt.Color(49, 49, 84));
+        HorarioButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        HorarioButton.setForeground(new java.awt.Color(204, 204, 204));
         HorarioButton.setText("Horarios");
-        HorarioButton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(203, 231, 250)));
+        HorarioButton.setBorder(null);
         HorarioButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         HorarioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,10 +173,11 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        CuotaButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        CuotaButton.setForeground(new java.awt.Color(113, 187, 237));
+        CuotaButton.setBackground(new java.awt.Color(49, 49, 84));
+        CuotaButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        CuotaButton.setForeground(new java.awt.Color(204, 204, 204));
         CuotaButton.setText("Cuota");
-        CuotaButton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(203, 231, 250)));
+        CuotaButton.setBorder(null);
         CuotaButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         CuotaButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -174,37 +185,24 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logo 100px.png"))); // NOI18N
-
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel1.setForeground(new java.awt.Color(27, 28, 49));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 631, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        administracionButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        administracionButton.setForeground(new java.awt.Color(113, 187, 237));
+        administracionButton.setBackground(new java.awt.Color(49, 49, 84));
+        administracionButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        administracionButton.setForeground(new java.awt.Color(204, 204, 204));
         administracionButton.setText("Administracion");
-        administracionButton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(203, 231, 250)));
+        administracionButton.setBorder(null);
         administracionButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        administracionButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         administracionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 administracionButtonActionPerformed(evt);
             }
         });
 
-        InformesButton1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        InformesButton1.setForeground(new java.awt.Color(113, 187, 237));
+        InformesButton1.setBackground(new java.awt.Color(49, 49, 84));
+        InformesButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        InformesButton1.setForeground(new java.awt.Color(204, 204, 204));
         InformesButton1.setText("Informes de pago");
-        InformesButton1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(203, 231, 250)));
+        InformesButton1.setBorder(null);
         InformesButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         InformesButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -212,14 +210,22 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        morososButton1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        morososButton1.setForeground(new java.awt.Color(113, 187, 237));
-        morososButton1.setText("Alumnos morosos");
-        morososButton1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(203, 231, 250)));
-        morososButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        morososButton1.addActionListener(new java.awt.event.ActionListener() {
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logo 100px.png"))); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(62, 62, 123));
+        jLabel3.setText("Bienvenido User!");
+        jLabel3.setAlignmentX(0.5F);
+
+        morososButton.setBackground(new java.awt.Color(49, 49, 84));
+        morososButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        morososButton.setForeground(new java.awt.Color(204, 204, 204));
+        morososButton.setText("Alumnos morosos");
+        morososButton.setBorder(null);
+        morososButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        morososButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                morososButton1ActionPerformed(evt);
+                morososButtonActionPerformed(evt);
             }
         });
 
@@ -228,49 +234,65 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(35, 35, 35)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(BoletinButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AlumnoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CuotaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(InformesButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(administracionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(HorarioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(morososButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(InformesButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(CuotaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(administracionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(HorarioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BoletinButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(AlumnoButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(morososButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(15, 15, 15)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jLabel1)
-                .addGap(53, 53, 53)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel2)))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(AlumnoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addComponent(BoletinButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(34, 34, 34)
                 .addComponent(HorarioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addComponent(CuotaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(InformesButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(morososButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(administracionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(morososButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
+        );
+
+        jPanel1.setBackground(new java.awt.Color(27, 28, 49));
+        jPanel1.setForeground(new java.awt.Color(27, 28, 49));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1004, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 670, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -278,16 +300,16 @@ public class Dashboard extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 761, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -317,9 +339,9 @@ public class Dashboard extends javax.swing.JFrame {
         Informes informes = new Informes(pagoRepository);
     }//GEN-LAST:event_InformesButton1ActionPerformed
 
-    private void morososButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_morososButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_morososButton1ActionPerformed
+    private void morososButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_morososButtonActionPerformed
+        Morosos morosos = new Morosos(titularRepository);
+    }//GEN-LAST:event_morososButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -330,9 +352,11 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton InformesButton1;
     private javax.swing.JButton administracionButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JButton morososButton1;
+    private javax.swing.JButton morososButton;
     // End of variables declaration//GEN-END:variables
 }

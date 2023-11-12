@@ -2,10 +2,10 @@ package com.desktop.DesktopApp.Swing;
 
 import javax.swing.table.DefaultTableModel;
 
-public class InformeTableModel extends DefaultTableModel {
-    private String[] columnNames = {"DNI", "Titular", "Mes", "Fecha de pago", "Monto"};
+public class MorosoTableModel extends DefaultTableModel {
+        private String[] columnNames = {"DNI", "Nombre", "Cantidad de meses adeudados"};
 
-    public InformeTableModel() {
+    public MorosoTableModel() {
         this.setColumnIdentifiers(columnNames);
     }
 

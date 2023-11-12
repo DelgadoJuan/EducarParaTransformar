@@ -1,5 +1,7 @@
 package com.educarparatransformar.web.DTO;
 
+import com.educarparatransformar.web.Entity.Roles;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;

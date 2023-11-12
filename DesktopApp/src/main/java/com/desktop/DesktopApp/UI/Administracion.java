@@ -31,6 +31,7 @@ public class Administracion extends javax.swing.JFrame {
         this.materiaRepository = materiaRepository;
         this.profesorRepository = profesorRepository;
         initComponents();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 
@@ -43,68 +44,99 @@ public class Administracion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cursoButton = new javax.swing.JButton();
-        materiaButton = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         horarioButton = new javax.swing.JButton();
+        materiaButton = new javax.swing.JButton();
+        cursoButton = new javax.swing.JButton();
         asignarProfesorButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("  ");
+        setResizable(false);
 
-        cursoButton.setText("Crear curso");
-        cursoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cursoButtonActionPerformed(evt);
-            }
-        });
+        jPanel1.setBackground(new java.awt.Color(27, 28, 49));
+        jPanel1.setForeground(new java.awt.Color(27, 28, 49));
 
-        materiaButton.setText("Crear materia");
-        materiaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                materiaButtonActionPerformed(evt);
-            }
-        });
-
+        horarioButton.setBackground(new java.awt.Color(49, 49, 84));
+        horarioButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        horarioButton.setForeground(new java.awt.Color(255, 255, 255));
         horarioButton.setText("Crear horario");
+        horarioButton.setBorder(null);
         horarioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 horarioButtonActionPerformed(evt);
             }
         });
 
+        materiaButton.setBackground(new java.awt.Color(49, 49, 84));
+        materiaButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        materiaButton.setForeground(new java.awt.Color(255, 255, 255));
+        materiaButton.setText("Crear materia");
+        materiaButton.setBorder(null);
+        materiaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                materiaButtonActionPerformed(evt);
+            }
+        });
+
+        cursoButton.setBackground(new java.awt.Color(49, 49, 84));
+        cursoButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cursoButton.setForeground(new java.awt.Color(255, 255, 255));
+        cursoButton.setText("Crear curso");
+        cursoButton.setBorder(null);
+        cursoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cursoButtonActionPerformed(evt);
+            }
+        });
+
+        asignarProfesorButton.setBackground(new java.awt.Color(49, 49, 84));
+        asignarProfesorButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        asignarProfesorButton.setForeground(new java.awt.Color(255, 255, 255));
         asignarProfesorButton.setText("Asignar profesor");
+        asignarProfesorButton.setBorder(null);
         asignarProfesorButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 asignarProfesorButtonActionPerformed(evt);
             }
         });
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(157, 157, 157)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cursoButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(materiaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(horarioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(asignarProfesorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(160, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(213, 213, 213)
+                .addComponent(cursoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(materiaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(horarioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(asignarProfesorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(244, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(asignarProfesorButton)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cursoButton)
-                        .addGap(30, 30, 30)
-                        .addComponent(materiaButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(horarioButton)))
-                .addContainerGap(25, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(97, 97, 97)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cursoButton)
-                    .addComponent(materiaButton)
-                    .addComponent(horarioButton))
-                .addGap(46, 46, 46)
-                .addComponent(asignarProfesorButton)
-                .addContainerGap(111, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -131,6 +163,7 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JButton asignarProfesorButton;
     private javax.swing.JButton cursoButton;
     private javax.swing.JButton horarioButton;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton materiaButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,6 +1,5 @@
 package com.educarparatransformar.web.Entity;
 
-import com.educarparatransformar.web.DTO.Dia;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
