@@ -318,7 +318,7 @@ public class PagoCuota extends javax.swing.JFrame {
         boolean valido = true;
 
         if (!tipoComboBox.getSelectedItem().toString().equals("Efectivo")) {
-            if (numeroField.getText().length() != 16) {
+            if (numeroField.getText().length() != 16 || numeroField.getText().matches("\\d*")) {
                 JOptionPane.showMessageDialog(null, "Número de tarjeta no válido");
                 valido = false;
             }
