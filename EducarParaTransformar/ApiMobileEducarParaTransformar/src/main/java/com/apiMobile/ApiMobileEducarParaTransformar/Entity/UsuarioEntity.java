@@ -29,7 +29,6 @@ public class UsuarioEntity implements Serializable {
     private String email;
     @Column(name = "password", nullable = false)
     @NotBlank
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @CreationTimestamp
     private LocalDateTime fechaCreacion;
