@@ -196,8 +196,12 @@ public class CrearHorario extends javax.swing.JFrame {
             try {
                 LocalTime inicio = LocalTime.parse(inicioField.getText(), DateTimeFormatter.ofPattern("HH:mm"));
                 LocalTime fin = LocalTime.parse(finField.getText(), DateTimeFormatter.ofPattern("HH:mm"));
-                horarioRepository.save(new HorarioEntity(materiaRepository.findByNombre(materiaCombo.getSelectedItem().toString()),
-                        Dia.valueOf(diaCombo.getSelectedItem().toString()), inicio, fin));
+                MateriaEntity materia = materiaRepository.findByNombre(materiaCombo.getSelectedItem().toString());
+                HorarioEntity horario = new HorarioEntity(materia,
+                        Dia.valueOf(diaCombo.getSelectedItem().toString()), inicio, fin);
+                horarioRepository.save(horario);
+                materia.getHorarios().add(horario);
+                materiaRepository.save(materia);
                 JOptionPane.showMessageDialog(null, "Operación realizada");
                 this.dispose();
             } catch (Exception ex) {

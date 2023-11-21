@@ -1,4 +1,4 @@
-package com.desktop.DesktopApp.Entity;
+package com.apiMobile.ApiMobileEducarParaTransformar.Entity;
 
 import jakarta.persistence.*;
 
@@ -24,19 +24,28 @@ public class CursoEntity {
     public CursoEntity() {
     }
 
-    public CursoEntity(long id, String año, List<EstudianteEntity> alumnosInscriptos, Nivel nivel, List<MateriaEntity> materias) {
+    public CursoEntity(String año, Nivel nivel) {
+        this.año = año;
+        this.alumnosInscriptos = new ArrayList<>();
+        this.nivel = nivel;
+        this.materias = new ArrayList<>();
+    }
+
+    public CursoEntity(Long id, String año, AulaEntity aula, List<EstudianteEntity> alumnosInscriptos, Nivel nivel, List<MateriaEntity> materias) {
         this.id = id;
         this.año = año;
+        this.aula = aula;
         this.alumnosInscriptos = alumnosInscriptos;
         this.nivel = nivel;
         this.materias = materias;
     }
 
-    public CursoEntity(String año, Nivel nivel) {
-        this.año = año;
-        this.nivel = nivel;
-        this.materias = new ArrayList<>();
-        this.alumnosInscriptos = new ArrayList<>();
+    public AulaEntity getAula() {
+        return aula;
+    }
+
+    public void setAula(AulaEntity aula) {
+        this.aula = aula;
     }
 
     public Long getId() {
