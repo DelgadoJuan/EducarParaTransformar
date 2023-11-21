@@ -22,7 +22,7 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        working-directory: ./EducarParaTransformar/ApiMobileEducarParaTransformar
+        working-directory: ./webMVC
         run: mvn clean install -Dmaven.test.skip=true
 
       - name: Upload artifact for deployment job
