@@ -1,24 +1,25 @@
 package com.example.educarparatransformar.Activity
 
+import Service.PostApiService
+import android.content.Intent
 import android.os.Bundle
-import android.os.StrictMode
-import android.util.Log
 import android.widget.Button
-import android.widget.Toast
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.lifecycle.lifecycleScope
 import com.example.educarparatransformar.R
-import org.conscrypt.Conscrypt
+import kotlinx.coroutines.launch
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import java.security.Security
-import java.sql.Connection
-import java.sql.DriverManager
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        supportActionBar?.title = ""
 
         val ingresarBtn : Button= findViewById<AppCompatButton>(R.id.loginButton)
         val passwordEncoder = BCryptPasswordEncoder()
@@ -26,69 +27,29 @@ class LoginActivity : AppCompatActivity() {
         ingresarBtn.setOnClickListener() {
             // Inicia la lógica de la base de datos en un hilo separado
             // Utiliza un CoroutineScope que esté vinculado al ciclo de vida de la actividad
-            /*lifecycleScope.launch {
-                //val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-                //StrictMode.setThreadPolicy(policy)
-                // Ejecuta la lógica de la base de datos en el contexto de Dispatchers.IO
-                withContext(Dispatchers.IO) {
-                    try {
-                        // Ejecuta una consulta
-                        val statement: Statement? = conexionBD()?.createStatement()
-                        val resultSet: ResultSet = statement!!.executeQuery("SELECT * FROM usuario WHERE rol = 1")
-
-                        var existe:Boolean = false
-                        val dniEditText: EditText = findViewById(R.id.dniEditText)
-                        val passwordEditText: EditText = findViewById(R.id.passwordEditText)
-
-                        // Procesa los resultados
-                        while (resultSet.next()) {
-                            val dni = resultSet.getString("username")
-                            val password = resultSet.getString("password")
-                            if (dniEditText.text.toString() == dni && passwordEncoder.matches(passwordEditText.text.toString(), password)) {
-                                existe = true
-                                val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
-                                startActivity(intent)
-                            }
-                        }
-
-                        if (!existe) {
-
-                        }
-
-                        // Cierra la conexión y otros recursos
-                        resultSet.close()
-                        statement.close()
-
-                    } catch (e: Exception) {
-                        // Maneja las excepciones adecuadamente
-                        e.printStackTrace()
+            val urlBase = ("https://api-educarparatransformar.azurewebsites.net/")
+            val retrofit = Retrofit.Builder()
+                .baseUrl(urlBase)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val service = retrofit.create(PostApiService::class.java)
+            lifecycleScope.launch {
+                val dniEditText:EditText = findViewById(R.id.dniEditText)
+                val contraseñaEditText:EditText = findViewById(R.id.passwordEditText)
+                val response = service.obtenerProfesores()
+                var existe:Boolean = false
+                response.forEach { profesor ->
+                    if (dniEditText.text.toString() == profesor.dni && passwordEncoder.matches(contraseñaEditText.text.toString(), profesor.contraseña)) {
+                        val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
+                        existe = true
+                        intent.putExtra("profesor", profesor)
+                        startActivity(intent)
                     }
                 }
-            }*/
-        }
-    }
-
-    fun conexionBD(): Connection? {
-        var cnn: Connection? = null
-        try {
-            val policy = StrictMode.ThreadPolicy.Builder().build()
-            StrictMode.setThreadPolicy(policy)
-            val conscrypt = Conscrypt.newProviderBuilder().provideTrustManager(false).build()
-            Security.insertProviderAt(conscrypt, 1)
-            DriverManager.registerDriver(com.microsoft.sqlserver.jdbc.SQLServerDriver())
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver")
-            val connectionUrl = "jdbc:sqlserver://34.176.20.231:1433;databaseName=educarparatransformar-db;TrustServerCertificate=True;user=sqlserver;password=disca123"
-            cnn = DriverManager.getConnection(connectionUrl)
-            runOnUiThread {
-                Toast.makeText(applicationContext, "Conexión exitosa", Toast.LENGTH_SHORT).show()
-            }
-        } catch (e: Exception) {
-            Log.e("LoginActivity", "Error al conectar", e)
-            runOnUiThread {
-                Toast.makeText(applicationContext, "Error del sistema", Toast.LENGTH_SHORT).show()
+                if (!existe) {
+                    println("error")
+                }
             }
         }
-        return cnn
     }
-
 }
